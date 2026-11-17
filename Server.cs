@@ -44,13 +44,15 @@ class Server {
                 resp = new RESPParser(buffer, received);
 
                 Value recv_value = resp.Read();
+
+                /*
                 Console.WriteLine("Read");
                 Console.WriteLine($"Client {client_ident}: type -> {recv_value.type}");
                 Console.WriteLine($"Client {client_ident}: str -> {recv_value.str}");
                 Console.WriteLine($"Client {client_ident}: num -> {recv_value.num}");
                 Console.WriteLine($"Client {client_ident}: bulk -> {recv_value.bulk}");
                 Console.WriteLine($"Client {client_ident}: array -> {recv_value.array}");
-                
+                */ 
                 Value send_value = new ();
 
                 send_value.type = "string";
