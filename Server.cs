@@ -43,16 +43,22 @@ class Server {
                 Console.WriteLine("Reading");
                 resp = new RESPParser(buffer, received);
 
-                Value value = resp.Read();
+                Value recv_value = resp.Read();
                 Console.WriteLine("Read");
-                Console.WriteLine($"Client {client_ident}: type -> {value.type}");
-                Console.WriteLine($"Client {client_ident}: str -> {value.str}");
-                Console.WriteLine($"Client {client_ident}: num -> {value.num}");
-                Console.WriteLine($"Client {client_ident}: bulk -> {value.bulk}");
-                Console.WriteLine($"Client {client_ident}: array -> {value.array}");
-            
-                string response = "+OK\r\n";
-                var response_bytes = Encoding.UTF8.GetBytes(response);
+                Console.WriteLine($"Client {client_ident}: type -> {recv_value.type}");
+                Console.WriteLine($"Client {client_ident}: str -> {recv_value.str}");
+                Console.WriteLine($"Client {client_ident}: num -> {recv_value.num}");
+                Console.WriteLine($"Client {client_ident}: bulk -> {recv_value.bulk}");
+                Console.WriteLine($"Client {client_ident}: array -> {recv_value.array}");
+                
+                Value send_value = new ();
+
+                send_value.type = "string";
+                send_value.str = "NOICE";
+                
+                RESPWriter writer = new (send_value);
+                var response_bytes = writer.Write();
+
                 await handler.SendAsync(response_bytes, 0);
 
             }

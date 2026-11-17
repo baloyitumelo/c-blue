@@ -10,6 +10,7 @@ public struct Value {
     public List<Value> array;
 }
 
+
 public readonly struct TypeIdent {
     public const byte STRING = (byte)'+';
     public const byte ERROR = (byte)'-';
