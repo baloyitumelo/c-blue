@@ -53,11 +53,9 @@ class Server {
                 Console.WriteLine($"Client {client_ident}: bulk -> {recv_value.bulk}");
                 Console.WriteLine($"Client {client_ident}: array -> {recv_value.array}");
                 */ 
-                Value send_value = new ();
-
-                send_value.type = "string";
-                send_value.str = "NOICE";
                 
+                Value send_value = CommandHandler.HandleCommand(recv_value.array);
+
                 RESPWriter writer = new (send_value);
                 var response_bytes = writer.Write();
 

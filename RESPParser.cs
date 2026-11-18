@@ -8,6 +8,18 @@ public struct Value {
     public string bulk;
     public int num;
     public List<Value> array;
+
+    public static Value StringValue(string text){
+        return new Value { type = "string", str = text };
+    }
+
+    public static Value BulkValue(string strByteSeq){
+        return new Value { type = "bulk", bulk = strByteSeq };
+    }
+
+    public static Value ArrayValue() {
+        return new Value { type = "array", array = new () };
+    }
 }
 
 
@@ -58,21 +70,18 @@ public class RESPParser {
         byte typeIdent = (byte)_buff.ReadByte();
 
         switch(typeIdent) {
-
             case TypeIdent.ARRAY: 
                 return ReadArray();
             case TypeIdent.BULK:
                 return ReadBulk();
             default:
                 return ReadBulk();
-
         }
 
     }
 
     Value ReadArray(){
-        Value value = new();
-        value.type = "array";
+        Value value = Value.ArrayValue();
 
         int len = ReadInteger();
         value.array = new();
@@ -86,17 +95,13 @@ public class RESPParser {
     }
 
     Value ReadBulk(){
-        Value value = new();
-        value.type = "bulk";
-
         int len = ReadInteger();
         byte[] bytes = new byte[len];
         _buff.ReadExactly(bytes, 0, len);
         string contents = Encoding.UTF8.GetString(bytes);
 
-        value.bulk = contents;
         ReadLine();
 
-        return value;
+        return Value.BulkValue(contents);
     }
 }

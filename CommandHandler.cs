@@ -1,6 +1,4 @@
 public class CommandHandler{
-    private static Store _store = new Store();    
-
     public static Value HandleCommand(List<Value> command){
         string cmd = command[0].bulk.ToUpper(); 
 
@@ -9,94 +7,72 @@ public class CommandHandler{
        
        switch(cmd) {
             case "PING":
-                return pong(args);
+                return Pong(args);
             case "SET":
-                return set(args);
+                return Set(args);
             case "GET":
-                return get(args);
+                return Get(args);
             case "HGET":
-                return hget(args);
+                return Hget(args);
             case "HSET":
-                return hset(args);
+                return Set(args);
        }
 
        return new Value();
     }
 
-    private static Value pong(List<Value> args) {
+    private static Value Pong(List<Value> args) {
             Value value = new Value();
             value.type = "string";
 
-            if(args.Count == 0){
+            if(args.Count == 0)
                 value.str = "PONG";
-            }
-            else {
+            else 
                 value.str = args[0].bulk;
-            }
 
             return value;
     }
 
-    private static Value set(List<Value> args){
+    private static Value Set(List<Value> args){
         string key = args[0].bulk;
         string keyValue = args[1].bulk;
 
-        /*
-            Set key value pair in store here
-        */
+        Store.Set(key, keyValue);
 
-        Value value = new Value();
-        value.type = "string";
-        value.str = "OK";
-
+        Value value = new Value { type = "string", str = "OK" };
         return value;
     }
 
-    private static Value get(List<Value> args){
+    private static Value Get(List<Value> args){
         string key = args[0].bulk;
         
-        /*
-            Get value from store here
-        */
+        string keyValue = Store.Get(key);
 
-        string keyValue = "TEMPORARY";
-
-        Value value = new Value();
-        value.type = "bulk";
-        value.bulk = keyValue;
+        Value value = new Value { type = "bulk", bulk = keyValue };
 
         return value;
     }
 
-    private static Value hget(List<Value> args){
+    private static Value Hget(List<Value> args){
         string hash = args[0].bulk;
         string key = args[1].bulk;
         
-        /*
-            Get value here
-        */
+        
+        string keyValue = Store.Hget(hash, key);
 
-        string keyValue = "TEMPORARY";
-        Value value = new Value();
-        value.type = "bulk";
-        value.bulk = keyValue;
+        Value value = new Value { type = "bulk", bulk = keyValue };
 
         return value;
     }
 
-    private static Value hset(List<Value> args){
+    private static Value Hset(List<Value> args){
         string hash = args[0].bulk;
         string key = args[1].bulk;
         string keyValue = args[2].bulk;
+        
+        Store.Hset(hash, key, keyValue);
 
-        /*
-             Set value here
-        */
-
-        Value value = new Value();
-        value.type = "string";
-        value.str = "OK";
-
+        Value value = new Value { type = "string", str = "OK" };
         return value;
     }
 
