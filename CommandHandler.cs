@@ -22,15 +22,14 @@ public class CommandHandler{
     }
 
     private static Value Pong(List<Value> args) {
-            Value value = new Value();
-            value.type = "string";
+            string response;
 
             if(args.Count == 0)
-                value.str = "PONG";
+                response = "PONG";      
             else 
-                value.str = args[0].bulk;
+                response = args[0].bulk;
 
-            return value;
+            return Value.StringValue(response);
     }
 
     private static Value Set(List<Value> args){
@@ -39,30 +38,27 @@ public class CommandHandler{
 
         Store.Set(key, keyValue);
 
-        Value value = new Value { type = "string", str = "OK" };
-        return value;
+        string response = "OK";
+        return Value.StringValue(response);
     }
 
     private static Value Get(List<Value> args){
         string key = args[0].bulk;
-        
+
         string keyValue = Store.Get(key);
-
-        Value value = new Value { type = "bulk", bulk = keyValue };
-
-        return value;
+        
+        string response = keyValue;
+        return Value.BulkValue(response);
     }
 
     private static Value Hget(List<Value> args){
         string hash = args[0].bulk;
         string key = args[1].bulk;
         
-        
         string keyValue = Store.Hget(hash, key);
-
-        Value value = new Value { type = "bulk", bulk = keyValue };
-
-        return value;
+        
+        string response = keyValue;
+        return Value.BulkValue(keyValue);
     }
 
     private static Value Hset(List<Value> args){
@@ -72,8 +68,8 @@ public class CommandHandler{
         
         Store.Hset(hash, key, keyValue);
 
-        Value value = new Value { type = "string", str = "OK" };
-        return value;
+        string response = "OK";
+        return Value.StringValue(response);
     }
 
 }
