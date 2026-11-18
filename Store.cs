@@ -10,8 +10,9 @@ public class Store {
     }
 
     public static string Get(string key){
-        if(!_store.TryGetValue(key, out var value))
-            return "";
+        if(!_store.TryGetValue(key, out var value)){
+            return null;
+        } 
 
         return value;
     }
@@ -23,10 +24,10 @@ public class Store {
 
     public static string Hget(string hash, string key){
         if(!_hashStore.TryGetValue(hash, out var mapping))
-            return "";
+            return null;
 
         if(!mapping.TryGetValue(key, out var value))
-            return "";
+            return null;
 
         return value;
     }

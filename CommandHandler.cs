@@ -15,7 +15,7 @@ public class CommandHandler{
             case "HGET":
                 return Hget(args);
             case "HSET":
-                return Set(args);
+                return Hset(args);
        }
 
        return new Value();
@@ -47,6 +47,9 @@ public class CommandHandler{
 
         string keyValue = Store.Get(key);
         
+        if(keyValue == null)
+            return Value.NullValue();
+
         string response = keyValue;
         return Value.BulkValue(response);
     }
@@ -56,7 +59,10 @@ public class CommandHandler{
         string key = args[1].bulk;
         
         string keyValue = Store.Hget(hash, key);
-        
+       
+        if(keyValue == null)
+            return Value.NullValue();
+
         string response = keyValue;
         return Value.BulkValue(keyValue);
     }

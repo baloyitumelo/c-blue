@@ -20,6 +20,10 @@ public struct Value {
     public static Value ArrayValue() {
         return new Value { type = "array", array = new () };
     }
+
+    public static Value NullValue(){
+        return new Value { type = "null" };
+    }
 }
 
 

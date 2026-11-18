@@ -38,8 +38,8 @@ public class RESPWriter{
 
         bytes.Add(TypeIdent.BULK);
 
-        byte[] count = IntToBytes(_value.num);
-        bytes.AddRange(count);;
+        byte[] count = IntToBytes(_value.bulk.Length);
+        bytes.AddRange(count);
     
         bytes.AddRange(CRLF);
 
